@@ -1,0 +1,70 @@
+.Directory {
+  height: 100%;
+
+  .wrap {
+    display: inline-block;
+    /*display: inline, the major difference is that display: inline-block allows to set a width and height on the element.
+    Also, with display: inline-block, the top and bottom margins/paddings are respected, but with display: inline they are not.*/
+    width: 100%;
+    height: 100%;
+
+    .item {
+      /* The image used is set in the jsx */
+      position: relative;
+      width: 50%;
+      height: 100%;
+      float: left; /*In its simplest use, the float property can be used to wrap text around images.*/
+      background-position: center center; /* Center the image both vertically and horozantally (if you specify only one word the second defaults to center */
+      background-repeat: no-repeat; /* Do not repeat the image */
+      background-size: cover; /* Resize the background image to cover the entire container */
+
+      //styling to make the image darker (effectively overlaying a black div over the images with transparancy set to 30%. )
+      &::after {
+        //the ampersand in SASS pulls in the parent selector in this case the div (item)
+        content: " ";
+        position: absolute;
+        top: 0;
+        left: 0;
+        background-color: rgba($color: #000000, $alpha: 0.3);
+        width: 100%;
+        height: 100%;
+        z-index: 1; //tells the browser to put this infront of the image
+      }
+
+      a {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%); //centering the ancor tag
+        z-index: 2;
+        font-size: 2rem;
+        line-height: 1;
+        font-weight: 400;
+        text-transform: uppercase;
+        background: white;
+        padding: 8px 10px;
+        border: 1px solid black;
+      }
+    }
+  }
+}
+
+/* NOTE
+
+POSTION ABSOLUTE
+An element with position: absolute; is positioned relative to the nearest positioned ancestor (instead of positioned relative to the viewport, like fixed).
+
+However; if an absolute positioned element has no positioned ancestors, it uses the document body, and moves along with page scrolling.
+
+
+HEIGHT PERCENTAGE 
+The percentage height is calculated with respect to the height of the generated box's containing block. If the height of the containing block is not specified explicitly (i.e., it depends on content height), and this element is not absolutely positioned, the percentage value is treated as '0' for height (for 'min-height') or 'none' (for 'max-height'). So parent containers need to have a height for children to use their available height. 
+
+So that's the rule. The reasoning behind the rule is pretty simple, and follows similar rules in CSS 2, circular dependencies must be avoided.
+
+When the container's height is specified, it has no dependency on the height of its content, so its content height can be safely specified as a percentage of that without creating a circular dependency.
+
+But that doesn't apply to when only the container's min-height is specified. If the content's height is greater than the min-height, then the container's height depends on the content's height, and if that's a percentage, then the content's height depends on the container's height, and you have a circular dependency. So it intentionally "doesn't work", to stop that situation arising.
+*/
