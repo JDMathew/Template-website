@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 //Router
 import { Route, Switch, Redirect } from "react-router-dom";
-import { auth } from "./firebase/utils"; //authentication from firebase
+import { auth, handleUserProfile } from "./firebase/utils"; //authentication from firebase
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -22,15 +22,24 @@ const initialState = {
 
 function App() {
   const [state, setState] = useState(initialState);
-  let authListener = null;
+  let authListener = null; //event listener
 
   useEffect(() => {
-    authListener = auth.onAuthStateChanged((userAuth) => {
-      if (!userAuth) {
-        setState({ ...initialState });
-      }
+    authListener = auth.onAuthStateChanged(async (userAuth) => {
+      if (userAuth) {
+        const userRef = await handleUserProfile(userAuth); //handleUserProfile returns our userRef document after creating it.
 
-      setState({ currentUser: userAuth });
+        //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
+        userRef.onSnapshot((snapshot) => {
+          setState({
+            currentUser: {
+              id: snapshot.id,
+              ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
+            },
+          });
+        });
+      }
+      setState({ ...initialState });
     });
 
     return () => {
