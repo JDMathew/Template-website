@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 //Router
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
+import { auth } from "./firebase/utils"; //authentication from firebase
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -15,7 +16,29 @@ import Login from "./pages/Login";
 //Styles
 import "./default.scss";
 
+const initialState = {
+  currentUser: null,
+};
+
 function App() {
+  const [state, setState] = useState(initialState);
+  let authListener = null;
+
+  useEffect(() => {
+    authListener = auth.onAuthStateChanged((userAuth) => {
+      if (!userAuth) {
+        setState({ ...initialState });
+      }
+
+      setState({ currentUser: userAuth });
+    });
+
+    return () => {
+      console.log("clean up  effect");
+      authListener();
+    };
+  }, []);
+
   return (
     <div className="App">
       <Switch>
@@ -25,7 +48,7 @@ function App() {
           exact={true}
           path="/"
           render={() => (
-            <HomepageLayout>
+            <HomepageLayout currentUser={state.currentUser}>
               <Homepage />
             </HomepageLayout>
           )}
@@ -33,7 +56,7 @@ function App() {
         <Route
           path="/register"
           render={() => (
-            <MainLayout>
+            <MainLayout currentUser={state.currentUser}>
               <Registration />
             </MainLayout>
           )}
@@ -41,18 +64,22 @@ function App() {
         <Route
           path="/about"
           render={() => (
-            <MainLayout>
+            <MainLayout currentUser={state.currentUser}>
               <About />
             </MainLayout>
           )}
         />
         <Route
           path="/login"
-          render={() => (
-            <MainLayout>
-              <Login />
-            </MainLayout>
-          )}
+          render={() =>
+            state.currentUser ? (
+              <Redirect to="/" /> // Redirect to homepage if currentUser exists
+            ) : (
+              <MainLayout currentUser={state.currentUser}>
+                <Login />
+              </MainLayout>
+            )
+          }
         />
       </Switch>
     </div>
