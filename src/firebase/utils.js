@@ -11,7 +11,7 @@ export const firestore = firebase.firestore();
 
 //SignIn Providers (can create custome providers for Google, Facebook, Github...)
 const GoogleProvider = new firebase.auth.GoogleAuthProvider();
-//const FacebookProvider = new firebase.auth.FacebookAuthProvider();
+const FacebookProvider = new firebase.auth.FacebookAuthProvider();
 
 //Setting custome parameters on providers
 GoogleProvider.setCustomParameters({ prompt: "select_account" });
