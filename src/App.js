@@ -1,4 +1,6 @@
 import React from "react";
+//Router
+import { Route, Switch } from "react-router-dom";
 
 //layouts
 import MainLayout from "./layouts/MainLayout";
@@ -7,9 +9,8 @@ import HomepageLayout from "./layouts/HomepageLayout";
 // pages
 import Homepage from "./pages/Homepage";
 import Registration from "./pages/Registration";
-
-//Router
-import { Route, Switch } from "react-router-dom";
+import About from "./pages/About";
+import Login from "./pages/Login";
 
 //Styles
 import "./default.scss";
@@ -34,6 +35,22 @@ function App() {
           render={() => (
             <MainLayout>
               <Registration />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/about"
+          render={() => (
+            <MainLayout>
+              <About />
+            </MainLayout>
+          )}
+        />
+        <Route
+          path="/login"
+          render={() => (
+            <MainLayout>
+              <Login />
             </MainLayout>
           )}
         />

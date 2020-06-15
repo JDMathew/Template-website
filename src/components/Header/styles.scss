@@ -26,24 +26,33 @@
     .callToActions {
       position: absolute;
       top: 50%;
-      right: 20px;
+      right: 10px;
       -webkit-transform: translateY(-50%);
       -moz-transform: translateY(-50%);
       transform: translateY(-50%); //to centre the element
-    }
-    ul,
-    li {
-      margin: 0;
-      padding: 0;
-    }
-    li {
-      list-style-type: none;
-      a {
-        font-size: 1.8rem;
-        line-height: 1;
-        color: black;
-        text-decoration: none;
-        text-transform: uppercase;
+
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+      }
+
+      li {
+        display: inline-block;
+        list-style-type: upper-roman;
+        margin-right: 1.5rem;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        a {
+          font-size: 1.8rem;
+          line-height: 1;
+          color: black;
+          text-decoration: none;
+          text-transform: uppercase;
+        }
       }
     }
   }
