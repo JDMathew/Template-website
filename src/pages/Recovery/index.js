@@ -1,9 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
+import EmailPassword from "../../components/EmailPassword";
 
 export default function Recovery(props) {
-  return (
-    <div>
-      <h1>Email Password</h1>
-    </div>
-  );
+  return <EmailPassword />;
 }

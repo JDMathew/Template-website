@@ -43,7 +43,7 @@ const SignIn = (props) => {
       <div className="fromWrap">
         <form onSubmit={handleSubmit}>
           <FormInput
-            type="text"
+            type="email"
             name="email"
             value={email}
             placeholder="email"

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
+import AuthWrapper from "../AuthWrapper";
 
 import { auth, handleUserProfile } from "./../../firebase/utils";
 
 import "./styles.scss";
-import AuthWrapper from "../AuthWrapper";
 
 const initialState = {
   displayName: "",
@@ -50,6 +50,7 @@ const SignUp = (props) => {
   }
 
   const { displayName, email, password, confirmPassword, errors } = signUp;
+
   const configAuthWrapper = {
     headline: "SignUp",
   };
@@ -73,7 +74,7 @@ const SignUp = (props) => {
           />
 
           <FormInput
-            type="text"
+            type="email"
             name="email"
             value={email}
             placeholder="example@domain.com"
