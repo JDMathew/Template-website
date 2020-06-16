@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
 
-//import { auth, handleUserProfile } from "./../../firebase/utils";
+import { auth, handleUserProfile } from "./../../firebase/utils";
 
 import "./styles.scss";
 
@@ -17,8 +17,29 @@ const initialState = {
 const SignUp = (props) => {
   const [signUp, setSignUp] = useState(initialState);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the Register with button...
+    const { displayName, email, password, confirmPassword } = signUp;
+    if (password !== confirmPassword) {
+      const err = ["Passwords Don't match"];
+      setSignUp({ ...signUp, errors: err });
+    }
+
+    try {
+      //call the createUserWithEmailAndPassword function from the firebase auth library and destrucuture the response into a user variable. i.e get the user object from the backend
+      const { user } = await auth.createUserWithEmailAndPassword(
+        email,
+        password
+      );
+      console.log("user" + user);
+      //create the user document using our handleuserProfile function
+      await handleUserProfile(user, { displayName });
+
+      //once user is signed up, restor the initial state
+      setSignUp({ ...initialState });
+    } catch (error) {
+      console.log("Errors" + error);
+    }
   }
 
   //update the FormInput field with what is typed into it

@@ -39,7 +39,7 @@ function App() {
           });
         });
       }
-      setState({ ...initialState });
+      setState({ ...initialState }); //same as setState(initialState) but could be differnet from setState({...state, ...initialState })
     });
 
     return () => {
@@ -64,11 +64,15 @@ function App() {
         />
         <Route
           path="/register"
-          render={() => (
-            <MainLayout currentUser={state.currentUser}>
-              <Registration />
-            </MainLayout>
-          )}
+          render={() =>
+            state.currentUser ? (
+              <Redirect to="/" /> // Redirect to homepage if currentUser exists
+            ) : (
+              <MainLayout currentUser={state.currentUser}>
+                <Registration />
+              </MainLayout>
+            )
+          }
         />
         <Route
           path="/about"
