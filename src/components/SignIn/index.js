@@ -5,7 +5,7 @@ import { signInWithGoogle } from "./../../firebase/utils";
 import "./styles.scss";
 
 const SignIn = (props) => {
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the signin with button...
   }
 
