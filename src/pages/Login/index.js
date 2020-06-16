@@ -1,10 +1,10 @@
 import React from "react";
-import "./styles.scss";
 import SignIn from "../../components/SignIn";
+import "./styles.scss";
 
 const Login = (props) => {
   return (
-    <div>
+    <div className="login">
       <SignIn />
     </div>
   );
