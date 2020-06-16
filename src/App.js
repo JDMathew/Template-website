@@ -12,6 +12,7 @@ import Homepage from "./pages/Homepage";
 import Registration from "./pages/Registration";
 import About from "./pages/About";
 import Login from "./pages/Login";
+import Recovery from "./pages/Recovery";
 
 //Styles
 import "./default.scss";
@@ -90,6 +91,18 @@ function App() {
             ) : (
               <MainLayout currentUser={state.currentUser}>
                 <Login />
+              </MainLayout>
+            )
+          }
+        />
+        <Route
+          path="/recovery"
+          render={() =>
+            state.currentUser ? (
+              <Redirect to="/" /> // Redirect to homepage if currentUser exists
+            ) : (
+              <MainLayout currentUser={state.currentUser}>
+                <Recovery />
               </MainLayout>
             )
           }

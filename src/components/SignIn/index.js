@@ -3,6 +3,7 @@ import Button from "./../../components/forms/Button";
 import FormInput from "./../../components/forms/FormInput";
 import { auth, signInWithGoogle } from "./../../firebase/utils";
 import "./styles.scss";
+import AuthWrapper from "../AuthWrapper";
 
 const initialState = {
   email: "",
@@ -33,36 +34,37 @@ const SignIn = (props) => {
     }
   }
   const { email, password, errors } = login;
+
+  const configAuthWrapper = {
+    headline: "Login",
+  };
   return (
-    <div className="signin">
-      <div className="wrap">
-        <h2>Login</h2>
-        <div className="fromWrap">
-          <form onSubmit={handleSubmit}>
-            <FormInput
-              type="text"
-              name="email"
-              value={email}
-              placeholder="email"
-              onChange={handleChange}
-            />
-            <FormInput
-              type="password"
-              name="password"
-              value={password}
-              placeholder="Password"
-              onChange={handleChange}
-            />
-            <Button type="submit">Login</Button>
-            <div className="socialSignin">
-              <div className="row">
-                <Button onClick={signInWithGoogle}>Sign in with Google</Button>
-              </div>
+    <AuthWrapper {...configAuthWrapper}>
+      <div className="fromWrap">
+        <form onSubmit={handleSubmit}>
+          <FormInput
+            type="text"
+            name="email"
+            value={email}
+            placeholder="email"
+            onChange={handleChange}
+          />
+          <FormInput
+            type="password"
+            name="password"
+            value={password}
+            placeholder="Password"
+            onChange={handleChange}
+          />
+          <Button type="submit">Login</Button>
+          <div className="socialSignin">
+            <div className="row">
+              <Button onClick={signInWithGoogle}>Sign in with Google</Button>
             </div>
-          </form>
-        </div>
+          </div>
+        </form>
       </div>
-    </div>
+    </AuthWrapper>
   );
 };
 
