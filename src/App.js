@@ -3,6 +3,11 @@ import React, { useState, useEffect } from "react";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./firebase/utils"; //authentication from firebase
 
+//REDUX
+import { connect } from "react-redux";
+//Actions
+import { setCurrentUser } from "./redux/User/user.actions";
+
 //layouts
 import MainLayout from "./layouts/MainLayout";
 import HomepageLayout from "./layouts/HomepageLayout";
@@ -17,12 +22,7 @@ import Recovery from "./pages/Recovery";
 //Styles
 import "./default.scss";
 
-const initialState = {
-  currentUser: null,
-};
-
-function App() {
-  const [state, setState] = useState(initialState);
+function App(props) {
   let authListener = null; //event listener
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function App() {
 
         //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
         userRef.onSnapshot((snapshot) => {
-          setState({
+          props.setCurrentUser({
             currentUser: {
               id: snapshot.id,
               ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
@@ -40,7 +40,7 @@ function App() {
           });
         });
       }
-      setState({ ...initialState }); //same as setState(initialState) but could be differnet from setState({...state, ...initialState })
+      props.setCurrentUser({ currentUser: userAuth }); //userAuth should return null.
     });
 
     return () => {
@@ -58,7 +58,7 @@ function App() {
           exact={true}
           path="/"
           render={() => (
-            <HomepageLayout currentUser={state.currentUser}>
+            <HomepageLayout>
               <Homepage />
             </HomepageLayout>
           )}
@@ -66,10 +66,10 @@ function App() {
         <Route
           path="/register"
           render={() =>
-            state.currentUser ? (
+            props.currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
-              <MainLayout currentUser={state.currentUser}>
+              <MainLayout>
                 <Registration />
               </MainLayout>
             )
@@ -78,7 +78,7 @@ function App() {
         <Route
           path="/about"
           render={() => (
-            <MainLayout currentUser={state.currentUser}>
+            <MainLayout>
               <About />
             </MainLayout>
           )}
@@ -86,10 +86,10 @@ function App() {
         <Route
           path="/login"
           render={() =>
-            state.currentUser ? (
+            props.currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
-              <MainLayout currentUser={state.currentUser}>
+              <MainLayout>
                 <Login />
               </MainLayout>
             )
@@ -98,10 +98,10 @@ function App() {
         <Route
           path="/recovery"
           render={() =>
-            state.currentUser ? (
+            props.currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
-              <MainLayout currentUser={state.currentUser}>
+              <MainLayout>
                 <Recovery />
               </MainLayout>
             )
@@ -112,4 +112,14 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = (state) => ({
+  currentUser: state.user.currentUser,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (payload) => dispatch(setCurrentUser(payload)), //setCurrentUser is our action used to update the state
+});
+
+//We disbatch actions to update the redux store with our new state. (i.e update our state like setState)
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
