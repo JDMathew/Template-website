@@ -20,7 +20,7 @@ function EmailPassword(props) {
     const { email } = emailPass;
 
     const config = {
-      url: "http://localhost:3000/login", // This is the retrun url we want to send the user once they have reset their password
+      url: "http://localhost:3000/login", // This is the retrun url given to firebase and it is the url we want to send the user once they have reset their password from the reset link they were emailed
     };
 
     try {

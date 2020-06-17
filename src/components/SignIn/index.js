@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Button from "./../../components/forms/Button";
 import FormInput from "./../../components/forms/FormInput";
 import { auth, signInWithGoogle } from "./../../firebase/utils";
@@ -60,6 +61,9 @@ const SignIn = (props) => {
           <div className="socialSignin">
             <div className="row">
               <Button onClick={signInWithGoogle}>Sign in with Google</Button>
+            </div>
+            <div className="links">
+              <Link to="/recovery">Reset Password</Link>
             </div>
           </div>
         </form>
