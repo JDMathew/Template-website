@@ -72,7 +72,7 @@ function EmailPassword(props) {
             name="email"
             value={email}
             placeholder="example@domain.com"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
           <div className="row">
             <Button type="submit">Reset</Button>

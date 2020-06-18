@@ -14,6 +14,7 @@ const initialState = {
 
 const SignIn = (props) => {
   const [login, setLogin] = useState(initialState);
+  const { email, password, errors } = login;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -22,7 +23,6 @@ const SignIn = (props) => {
 
   async function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the signin with button...
-    const { email, password } = login;
 
     try {
       //Login user with signInWithEmailAndPassword function from the firebase auth library
@@ -34,7 +34,6 @@ const SignIn = (props) => {
       console.log("Errors" + error);
     }
   }
-  const { email, password, errors } = login;
 
   const configAuthWrapper = {
     headline: "Login",
@@ -48,14 +47,14 @@ const SignIn = (props) => {
             name="email"
             value={email}
             placeholder="email"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
           <FormInput
             type="password"
             name="password"
             value={password}
             placeholder="Password"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
           <Button type="submit">Login</Button>
           <div className="socialSignin">

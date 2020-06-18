@@ -70,7 +70,7 @@ const SignUp = (props) => {
             name="displayName"
             value={displayName}
             placeholder="Full Name"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
 
           <FormInput
@@ -78,7 +78,7 @@ const SignUp = (props) => {
             name="email"
             value={email}
             placeholder="example@domain.com"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
 
           <FormInput
@@ -86,7 +86,7 @@ const SignUp = (props) => {
             name="password"
             value={password}
             placeholder="Password"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
 
           <FormInput
@@ -94,7 +94,7 @@ const SignUp = (props) => {
             name="confirmPassword"
             value={confirmPassword}
             placeholder="Confirm Password"
-            onChange={handleChange}
+            handleChange={handleChange}
           />
 
           <div className="row">
