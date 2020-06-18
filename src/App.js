@@ -8,6 +8,9 @@ import { connect } from "react-redux";
 //Actions
 import { setCurrentUser } from "./redux/User/user.actions";
 
+//hoc
+import WithAuth from "./hoc/withAuth";
+
 //layouts
 import MainLayout from "./layouts/MainLayout";
 import HomepageLayout from "./layouts/HomepageLayout";
@@ -18,21 +21,24 @@ import Registration from "./pages/Registration";
 import About from "./pages/About";
 import Login from "./pages/Login";
 import Recovery from "./pages/Recovery";
+import Dashboard from "./pages/Dashboard";
 
 //Styles
 import "./default.scss";
 
 function App(props) {
-  let authListener = null; //event listener
+  const { setCurrentUser } = props; //Destructuring actions (setCurrentUser action) from props
 
   useEffect(() => {
-    authListener = auth.onAuthStateChanged(async (userAuth) => {
+    //event listener
+    const authListener = auth.onAuthStateChanged(async (userAuth) => {
       if (userAuth) {
         const userRef = await handleUserProfile(userAuth); //handleUserProfile returns our userRef document after creating it.
 
         //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
         userRef.onSnapshot((snapshot) => {
-          props.setCurrentUser({
+          //Call our Redux action to update state
+          setCurrentUser({
             currentUser: {
               id: snapshot.id,
               ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
@@ -40,7 +46,7 @@ function App(props) {
           });
         });
       }
-      props.setCurrentUser({ currentUser: userAuth }); //userAuth should return null.
+      setCurrentUser({ currentUser: userAuth }); //userAuth should return null.
     });
 
     return () => {
@@ -106,6 +112,16 @@ function App(props) {
               </MainLayout>
             )
           }
+        />
+        <Route
+          path="/dashboard"
+          render={() => (
+            <WithAuth>
+              <MainLayout>
+                <Dashboard />
+              </MainLayout>
+            </WithAuth>
+          )}
         />
       </Switch>
     </div>

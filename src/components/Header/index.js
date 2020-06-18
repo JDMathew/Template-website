@@ -20,6 +20,9 @@ const Header = (props) => {
           {currentUser && (
             <ul>
               <li>
+                <Link to="/dashboard">My Account</Link>
+              </li>
+              <li>
                 <span
                   onClick={() => {
                     auth.signOut(); //tell Firebase to signOut user
@@ -35,6 +38,7 @@ const Header = (props) => {
               <li>
                 <Link to="/register">Register</Link>
               </li>
+
               <li>
                 <Link to="/login">Login</Link>
               </li>
