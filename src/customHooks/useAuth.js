@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"; //Redux hook to get information from the store
 
 //All custom hooks should be prefixed with the 'use' keyword
 
