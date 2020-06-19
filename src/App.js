@@ -4,7 +4,7 @@ import { Route, Switch, Redirect } from "react-router-dom";
 import { auth, handleUserProfile } from "./firebase/utils"; //authentication from firebase
 
 //REDUX
-import { connect } from "react-redux";
+import { connect, useSelector, useDispatch } from "react-redux";
 //Actions
 import { setCurrentUser } from "./redux/User/user.actions";
 
@@ -27,7 +27,8 @@ import Dashboard from "./pages/Dashboard";
 import "./default.scss";
 
 function App(props) {
-  const { setCurrentUser } = props; //Destructuring actions (setCurrentUser action) from props
+  const currentUser = useSelector((state) => state.user.currentUser);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     //event listener
@@ -38,15 +39,17 @@ function App(props) {
         //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
         userRef.onSnapshot((snapshot) => {
           //Call our Redux action to update state
-          setCurrentUser({
-            currentUser: {
-              id: snapshot.id,
-              ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
-            },
-          });
+          dispatch(
+            setCurrentUser({
+              currentUser: {
+                id: snapshot.id,
+                ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
+              },
+            })
+          );
         });
       }
-      setCurrentUser({ currentUser: userAuth }); //userAuth should return null.
+      dispatch(setCurrentUser({ currentUser: userAuth })); //userAuth should return null.
     });
 
     return () => {
@@ -72,7 +75,7 @@ function App(props) {
         <Route
           path="/register"
           render={() =>
-            props.currentUser ? (
+            currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
               <MainLayout>
@@ -92,7 +95,7 @@ function App(props) {
         <Route
           path="/login"
           render={() =>
-            props.currentUser ? (
+            currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
               <MainLayout>
@@ -104,7 +107,7 @@ function App(props) {
         <Route
           path="/recovery"
           render={() =>
-            props.currentUser ? (
+            currentUser ? (
               <Redirect to="/" /> // Redirect to homepage if currentUser exists
             ) : (
               <MainLayout>
@@ -128,14 +131,20 @@ function App(props) {
   );
 }
 
-const mapStateToProps = (state) => ({
-  currentUser: state.user.currentUser,
-});
+export default App;
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (payload) => dispatch(setCurrentUser(payload)), //setCurrentUser is our action used to update the state
-});
+// /// REDUX without REDUX HOOKS:
+// const { setCurrentUser, currentUser } = props; //Destructuring actions (setCurrentUser action) and state currentUser from props
+// // .... code....
 
-//We disbatch actions to update the redux store with our new state. (i.e update our state like setState)
+// const mapStateToProps = (state) => ({
+//   currentUser: state.user.currentUser,
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// const mapDispatchToProps = (dispatch) => ({
+//   setCurrentUser: (payload) => dispatch(setCurrentUser(payload)), //setCurrentUser is our action used to update the state
+// });
+
+// //We disbatch actions to update the redux store with our new state. (i.e update our state like setState)
+
+// export default connect(mapStateToProps, mapDispatchToProps)(App);

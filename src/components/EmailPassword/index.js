@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
 import AuthWrapper from "../AuthWrapper";
-import { resetPassword } from "./../../redux/User/user.actions";
-import userTypes from "./../../redux/User/user.types";
+import {
+  resetPassword,
+  resetAllAuthForms,
+} from "./../../redux/User/user.actions";
 
 const initialState = {
   email: "",
@@ -28,15 +30,10 @@ function EmailPassword(props) {
 
   function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the Register with button...
-
-    const config = {
-      url: "http://localhost:3000/login", // This is the retrun url given to firebase and it is the url we want to send the user once they have reset their password from the reset link they were emailed
-    };
-    dispatch(resetPassword({ email, config }));
+    dispatch(resetPassword({ email }));
   }
 
   useEffect(() => {
-    console.log("Effect running" + resetPasswordSuccess);
     if (resetPasswordSuccess) {
       //once user reset password , restor the initial state
       setEmailPass({ ...initialState });
@@ -44,12 +41,7 @@ function EmailPassword(props) {
     }
 
     return () => {
-      console.log("Rancleanup for reset pass");
-      dispatch({
-        type: userTypes.RESET_PASSWORD_SUCCESS,
-        payload: false,
-      });
-      console.log("After Cleanup " + resetPasswordSuccess);
+      dispatch(resetAllAuthForms);
     };
   }, [resetPasswordSuccess]);
 
@@ -58,7 +50,7 @@ function EmailPassword(props) {
       setEmailPass({ ...initialState, errors: resetPasswordError });
     }
     return () => {
-      //Add cleanup for resetPasswordError global state
+      //Added cleanup for resetPasswordError global state in the reset passwordSuccess useEffect unmount.
     };
   }, [resetPasswordError]);
 

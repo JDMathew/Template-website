@@ -10,13 +10,14 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 
 //SignIn Providers (can create custome providers for Google, Facebook, Github...)
-const GoogleProvider = new firebase.auth.GoogleAuthProvider();
+export const GoogleProvider = new firebase.auth.GoogleAuthProvider();
 const FacebookProvider = new firebase.auth.FacebookAuthProvider();
 
 //Setting custome parameters on providers
 GoogleProvider.setCustomParameters({ prompt: "select_account" });
 
-export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider); //signInWithPopup accepts a provider we pass it
+//no longer calling this directly from our button click, instead using a dispatch action
+//export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider); //signInWithPopup accepts a provider we pass it
 
 //utility function to handelUsers Profile for GraphQL
 export const handleUserProfile = async (userAuth, additionalData) => {

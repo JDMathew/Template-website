@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Button from "./../../components/forms/Button";
 import FormInput from "./../../components/forms/FormInput";
-import { signInUser } from "./../../redux/User/user.actions";
-import { signInWithGoogle } from "./../../firebase/utils";
+import {
+  signInUser,
+  signInWithGoogle,
+  resetAllAuthForms,
+} from "./../../redux/User/user.actions";
+
 import "./styles.scss";
 import AuthWrapper from "../AuthWrapper";
 
@@ -26,11 +30,12 @@ const SignIn = (props) => {
   const { signInSuccess } = useSelector(mapState);
 
   useEffect(() => {
-    console.log(signInSuccess);
-    //once user is Loged in, rest to the initial state
-    setLogin({ ...initialState });
+    if (signInSuccess) {
+      //once user is Loged in, rest to the initial state
+      setLogin({ ...initialState });
+    }
     return () => {
-      //cleanup
+      dispatch(resetAllAuthForms);
     };
   }, [signInSuccess]);
 
@@ -45,6 +50,10 @@ const SignIn = (props) => {
     //Disbatch action
     dispatch(signInUser(login)); // could also dispatch(signInUser({email,password}))
   }
+
+  const handleGoogleSignIn = () => {
+    dispatch(signInWithGoogle());
+  };
 
   const configAuthWrapper = {
     headline: "Login",
@@ -70,7 +79,7 @@ const SignIn = (props) => {
           <Button type="submit">Login</Button>
           <div className="socialSignin">
             <div className="row">
-              <Button onClick={signInWithGoogle}>Sign in with Google</Button>
+              <Button onClick={handleGoogleSignIn}>Sign in with Google</Button>
             </div>
             <div className="links">
               <Link to="/recovery">Reset Password</Link>
