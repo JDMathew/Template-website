@@ -17,10 +17,11 @@ const initialState = {
 
 const SignUp = (props) => {
   const [signUp, setSignUp] = useState(initialState);
+  const { displayName, email, password, confirmPassword, errors } = signUp;
 
   async function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the Register with button...
-    const { displayName, email, password, confirmPassword } = signUp;
+
     if (password !== confirmPassword) {
       const err = ["Passwords Don't match"];
       setSignUp({ ...signUp, errors: err });
@@ -48,8 +49,6 @@ const SignUp = (props) => {
     const { name, value } = e.target;
     setSignUp({ ...signUp, [name]: value });
   }
-
-  const { displayName, email, password, confirmPassword, errors } = signUp;
 
   const configAuthWrapper = {
     headline: "SignUp",

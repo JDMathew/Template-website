@@ -18,3 +18,24 @@ export const signInUser = ({ email, password }) => async (dispatch) => {
     console.log("Errors" + error);
   }
 };
+
+export const resetPassword = ({ email, config }) => async (dispatch) => {
+  try {
+    await auth
+      .sendPasswordResetEmail(email, config)
+      .then(() => {
+        //What to do when the promis is successful
+        dispatch({
+          type: userTypes.RESET_PASSWORD_SUCCESS,
+          payload: true,
+        });
+      })
+      .catch((error) => {
+        //What to do when the promis is fails
+        const err = ["Email not found. Please try again"];
+        dispatch({ type: userTypes.RESET_PASSWORD_ERROR, payload: err });
+      });
+  } catch (error) {
+    //console.log("Errors" + error);
+  }
+};

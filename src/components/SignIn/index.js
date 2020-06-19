@@ -26,6 +26,7 @@ const SignIn = (props) => {
   const { signInSuccess } = useSelector(mapState);
 
   useEffect(() => {
+    console.log(signInSuccess);
     //once user is Loged in, rest to the initial state
     setLogin({ ...initialState });
     return () => {
