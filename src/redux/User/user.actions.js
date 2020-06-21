@@ -1,9 +1,30 @@
 import userTypes from "./user.types";
 import { auth, GoogleProvider } from "./../../firebase/utils";
 
-export const setCurrentUser = (payload) => ({
+export const emailSignInStart = (userCredentials) => ({
+  type: userTypes.EMAIL_SIGN_IN_START,
+  payload: userCredentials,
+});
+
+export const signInSuccess = (user) => ({
+  type: userTypes.SIGN_IN_SUCCESS,
+  payload: user,
+});
+
+export const setCurrentUser = (user) => ({
   type: userTypes.SET_CURRENT_USER,
-  payload,
+  payload: user,
+});
+
+export const checkUserSession = () => ({
+  type: userTypes.CHECK_USER_SESSION,
+});
+
+export const signOutUserStart = () => ({
+  type: userTypes.SIGN_OUT_USER_START,
+});
+export const signOutUserSuccess = () => ({
+  type: userTypes.SIGN_OUT_USER_SUCCESS,
 });
 
 export const signInUser = ({ email, password }) => async (dispatch) => {

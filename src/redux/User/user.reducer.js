@@ -10,6 +10,12 @@ const INITIAL_STATE = {
 const userReducer = (state = INITIAL_STATE, { type, payload }) => {
   //{ type, payload } could be replaced with action because we pass our action to our reducers.
   switch (type) {
+    case userTypes.SIGN_IN_SUCCESS:
+      return { ...state, currentUser: payload };
+    case userTypes.SIGN_OUT_USER_SUCCESS:
+      return { ...state, ...INITIAL_STATE };
+
+    ///OLD CAN REMOVE
     case userTypes.SET_CURRENT_USER:
       return { ...state, ...payload };
     case userTypes.SIGN_IN_SUCCESS:
@@ -25,6 +31,7 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
         resetPasswordSuccess: false,
         resetPasswordError: [],
       };
+    /////////////////
 
     default:
       return state;

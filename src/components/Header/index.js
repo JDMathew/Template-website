@@ -1,9 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import "./styles.scss";
 import { Link } from "react-router-dom";
 import { auth } from "./../../firebase/utils";
-
+import { signOutUserStart } from "../../redux/User/user.actions";
 import Logo from "./../../assets/logo/Logo.png";
 
 const mapState = (state) => ({
@@ -13,7 +13,11 @@ const mapState = (state) => ({
 
 const Header = (props) => {
   const { currentUser } = useSelector(mapState); //Destruct current user from state with useSelector redux hook.
+  const dispatch = useDispatch();
 
+  const signOut = (params) => {
+    dispatch(signOutUserStart);
+  };
   return (
     <header className="header">
       <div className="wrap">
@@ -31,7 +35,7 @@ const Header = (props) => {
               <li>
                 <span
                   onClick={() => {
-                    auth.signOut(); //tell Firebase to signOut user
+                    signOut(); // reaplced auth.signOut(); //tell Firebase to signOut user
                   }}
                 >
                   Logout

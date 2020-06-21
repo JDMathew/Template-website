@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "./../../components/forms/Button";
 import FormInput from "./../../components/forms/FormInput";
 import {
-  signInUser,
+  emailSignInStart,
   signInWithGoogle,
   resetAllAuthForms,
 } from "./../../redux/User/user.actions";
@@ -19,6 +19,7 @@ const initialState = {
 };
 
 const mapState = (state) => ({
+  currentUser: state.user.currentUser,
   signInSuccess: state.user.signInSuccess,
 });
 
@@ -27,17 +28,15 @@ const SignIn = (props) => {
   const [login, setLogin] = useState(initialState);
   const { email, password, errors } = login;
 
-  const { signInSuccess } = useSelector(mapState);
+  const { signInSuccess, currentUser } = useSelector(mapState);
 
   useEffect(() => {
-    if (signInSuccess) {
+    if (currentUser) {
       //once user is Loged in, rest to the initial state
       setLogin({ ...initialState });
     }
-    return () => {
-      dispatch(resetAllAuthForms);
-    };
-  }, [signInSuccess]);
+    return () => {};
+  }, [currentUser]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -48,7 +47,7 @@ const SignIn = (props) => {
     e.preventDefault(); //prevent the page reloading when one pushes the signin with button...
 
     //Disbatch action
-    dispatch(signInUser(login)); // could also dispatch(signInUser({email,password}))
+    dispatch(emailSignInStart(login)); // could also dispatch(signInUser({email,password}))
   }
 
   const handleGoogleSignIn = () => {

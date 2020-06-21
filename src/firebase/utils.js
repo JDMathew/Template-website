@@ -20,7 +20,7 @@ GoogleProvider.setCustomParameters({ prompt: "select_account" });
 //export const signInWithGoogle = () => auth.signInWithPopup(GoogleProvider); //signInWithPopup accepts a provider we pass it
 
 //utility function to handelUsers Profile for GraphQL
-export const handleUserProfile = async (userAuth, additionalData) => {
+export const handleUserProfile = async ({ userAuth, additionalData }) => {
   if (!userAuth) return; // if userAuth is null... return else..
 
   //Check if user is in current collection (colletion is a firebase thing. It's like a table)
@@ -49,4 +49,13 @@ export const handleUserProfile = async (userAuth, additionalData) => {
     }
   }
   return userRef; //Return the userRef document to update the local state of our application
+};
+
+export const getCurrentUser = () => {
+  return new Promise((resolve, reject) => {
+    const unsubscribe = auth.onAuthStateChanged((userAuth) => {
+      unsubscribe();
+      resolve(userAuth);
+    }, reject);
+  });
 };
