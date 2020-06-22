@@ -38,6 +38,7 @@ export function* getSnapshotFromUserAuth(user, additionalData = {}) {
   } catch (error) {}
 }
 //-------------------------------------------------------------
+
 // EMAIL SIGN IN:
 //Worker
 export function* emailSignIn({ payload: { email, password } }) {
@@ -53,6 +54,26 @@ export function* emailSignIn({ payload: { email, password } }) {
 //Watcher
 export function* onEmailSignInStart() {
   yield takeLatest(userTypes.EMAIL_SIGN_IN_START, emailSignIn);
+}
+//-------------------------------------------------------------
+
+// GOOGLE SIGN IN:
+//Worker
+export function* googleSignIn() {
+  try {
+    const { user } = yield auth.signInWithPopup(GoogleProvider);
+    yield getSnapshotFromUserAuth(user);
+    //Login user with signInWithEmailAndPassword function from the firebase auth library
+    //const { user } = yield auth.signInWithEmailAndPassword(email, password);
+    // yield getSnapshotFromUserAuth(user);
+  } catch (error) {
+    console.log("Errors" + error);
+  }
+}
+
+//Watcher
+export function* onGoogleSignInStart() {
+  yield takeLatest(userTypes.GOOGLE_SIGN_IN_START, googleSignIn);
 }
 //-------------------------------------------------------------
 
@@ -151,6 +172,7 @@ export function* onResetPasswordStart() {
 export default function* userSagas() {
   yield all([
     call(onEmailSignInStart),
+    call(onGoogleSignInStart),
     call(onCheckUserSession),
     call(onSignOutUserStart),
     call(onSignUpUserStart),

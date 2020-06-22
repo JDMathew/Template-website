@@ -47,6 +47,10 @@ export const resetPasswordSuccess = () => ({
   payload: true,
 });
 
+export const googleSignInStart = () => ({
+  type: userTypes.GOOGLE_SIGN_IN_START,
+});
+
 ///// old actions
 
 export const signInUser = ({ email, password }) => async (dispatch) => {

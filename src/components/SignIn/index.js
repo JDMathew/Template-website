@@ -5,6 +5,7 @@ import Button from "./../../components/forms/Button";
 import FormInput from "./../../components/forms/FormInput";
 import {
   emailSignInStart,
+  googleSignInStart,
   signInWithGoogle,
   resetAllAuthForms,
 } from "./../../redux/User/user.actions";
@@ -50,7 +51,7 @@ const SignIn = (props) => {
   }
 
   const handleGoogleSignIn = () => {
-    dispatch(signInWithGoogle());
+    dispatch(googleSignInStart());
   };
 
   const configAuthWrapper = {
