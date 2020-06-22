@@ -6,6 +6,7 @@ import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
 import AuthWrapper from "../AuthWrapper";
 import {
+  resetPasswordStart,
   resetPassword,
   resetAllAuthForms,
 } from "./../../redux/User/user.actions";
@@ -17,20 +18,20 @@ const initialState = {
 
 const MapState = (state) => ({
   resetPasswordSuccess: state.user.resetPasswordSuccess,
-  resetPasswordError: state.user.resetPasswordError,
+  userError: state.user.userError,
 });
 
 function EmailPassword(props) {
   const [emailPass, setEmailPass] = useState(initialState);
   const history = useHistory();
   const dispatch = useDispatch();
-  const { resetPasswordSuccess, resetPasswordError } = useSelector(MapState); //trystate => state.resetPasswordSuccess
+  const { resetPasswordSuccess, userError } = useSelector(MapState); //trystate => state.resetPasswordSuccess
 
   const { email, errors } = emailPass;
 
   function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the Register with button...
-    dispatch(resetPassword({ email }));
+    dispatch(resetPasswordStart({ email }));
   }
 
   useEffect(() => {
@@ -41,18 +42,18 @@ function EmailPassword(props) {
     }
 
     return () => {
-      dispatch(resetAllAuthForms);
+      dispatch(resetAllAuthForms());
     };
   }, [resetPasswordSuccess]);
 
   useEffect(() => {
-    if (Array.isArray(resetPasswordError) && resetPasswordError.length > 0) {
-      setEmailPass({ ...initialState, errors: resetPasswordError });
+    if (Array.isArray(userError) && userError.length > 0) {
+      setEmailPass({ ...initialState, errors: userError });
     }
     return () => {
-      //Added cleanup for resetPasswordError global state in the reset passwordSuccess useEffect unmount.
+      //Added cleanup for userError global state in the reset passwordSuccess useEffect unmount.
     };
-  }, [resetPasswordError]);
+  }, [userError]);
 
   //update the FormInput field with what is typed into it
   function handleChange(e) {

@@ -45,7 +45,6 @@ const SignIn = (props) => {
 
   function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the signin with button...
-
     //Disbatch action
     dispatch(emailSignInStart(login)); // could also dispatch(signInUser({email,password}))
   }

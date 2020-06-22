@@ -51,6 +51,7 @@ export const handleUserProfile = async ({ userAuth, additionalData }) => {
   return userRef; //Return the userRef document to update the local state of our application
 };
 
+// Helper function to find out if the current user is signed into our application.
 export const getCurrentUser = () => {
   return new Promise((resolve, reject) => {
     const unsubscribe = auth.onAuthStateChanged((userAuth) => {

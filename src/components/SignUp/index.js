@@ -1,7 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
 import AuthWrapper from "../AuthWrapper";
+import { userError, signUpUserStart } from "../../redux/User/user.actions";
 
 import { auth, handleUserProfile } from "./../../firebase/utils";
 
@@ -15,33 +17,49 @@ const initialState = {
   errors: [],
 };
 
+const mapState = (state) => ({
+  currentUser: state.user.currentUser,
+  userError: state.user.userError,
+});
+
 const SignUp = (props) => {
   const [signUp, setSignUp] = useState(initialState);
   const { displayName, email, password, confirmPassword, errors } = signUp;
+  const { currentUser, userError } = useSelector((state) => ({
+    currentUser: state.user.currentUser,
+    userError: state.user.userError,
+  }));
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (currentUser) {
+      setSignUp({ ...initialState });
+    }
+    return () => {
+      //cleanup;
+    };
+  }, [currentUser]);
+  useEffect(() => {
+    if (Array.isArray(userError) && userError.length > 0) {
+      setSignUp({ ...signUp, errors: userError });
+    }
+    return () => {
+      //cleanup
+    };
+  }, [userError]);
 
   async function handleSubmit(e) {
     e.preventDefault(); //prevent the page reloading when one pushes the Register with button...
 
-    if (password !== confirmPassword) {
-      const err = ["Passwords Don't match"];
-      setSignUp({ ...signUp, errors: err });
-    }
-
-    try {
-      //call the createUserWithEmailAndPassword function from the firebase auth library and destrucuture the response into a user variable. i.e get the user object from the backend
-      const { user } = await auth.createUserWithEmailAndPassword(
+    dispatch(
+      signUpUserStart({
+        displayName,
         email,
-        password
-      );
-      console.log("user" + user);
-      //create the user document using our handleuserProfile function
-      await handleUserProfile(user, { displayName });
-
-      //once user is signed up, restor the initial state
-      setSignUp({ ...initialState });
-    } catch (error) {
-      console.log("Errors" + error);
-    }
+        password,
+        confirmPassword,
+        errors,
+      }) /// try write this by destructuring state. i.e {...signUp}
+    );
   }
 
   //update the FormInput field with what is typed into it

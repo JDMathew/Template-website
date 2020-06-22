@@ -1,10 +1,11 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import "./styles.scss";
 import { Link } from "react-router-dom";
 import { auth } from "./../../firebase/utils";
-import { signOutUserStart } from "../../redux/User/user.actions";
+import { signOutUserStart } from "./../../redux/User/user.actions";
 import Logo from "./../../assets/logo/Logo.png";
+
+import "./styles.scss";
 
 const mapState = (state) => ({
   currentUser: state.user.currentUser, // This provides our currentUser state object from our root reducer.
@@ -15,9 +16,10 @@ const Header = (props) => {
   const { currentUser } = useSelector(mapState); //Destruct current user from state with useSelector redux hook.
   const dispatch = useDispatch();
 
-  const signOut = (params) => {
-    dispatch(signOutUserStart);
+  const signOut = () => {
+    dispatch(signOutUserStart());
   };
+
   return (
     <header className="header">
       <div className="wrap">

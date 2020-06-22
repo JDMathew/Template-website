@@ -27,6 +27,28 @@ export const signOutUserSuccess = () => ({
   type: userTypes.SIGN_OUT_USER_SUCCESS,
 });
 
+export const signUpUserStart = (userCredentials) => ({
+  type: userTypes.SIGN_UP_USER_START,
+  payload: userCredentials,
+});
+
+export const userError = (error) => ({
+  type: userTypes.USER_ERROR,
+  payload: error,
+});
+
+export const resetPasswordStart = (userCredentials) => ({
+  type: userTypes.RESET_PASSWORD_START,
+  payload: userCredentials,
+});
+
+export const resetPasswordSuccess = () => ({
+  type: userTypes.RESET_PASSWORD_SUCCESS,
+  payload: true,
+});
+
+///// old actions
+
 export const signInUser = ({ email, password }) => async (dispatch) => {
   try {
     //Login user with signInWithEmailAndPassword function from the firebase auth library
