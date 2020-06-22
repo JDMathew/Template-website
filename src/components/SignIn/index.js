@@ -6,8 +6,6 @@ import FormInput from "./../../components/forms/FormInput";
 import {
   emailSignInStart,
   googleSignInStart,
-  signInWithGoogle,
-  resetAllAuthForms,
 } from "./../../redux/User/user.actions";
 
 import "./styles.scss";
@@ -21,7 +19,6 @@ const initialState = {
 
 const mapState = (state) => ({
   currentUser: state.user.currentUser,
-  signInSuccess: state.user.signInSuccess,
 });
 
 const SignIn = (props) => {
@@ -29,7 +26,7 @@ const SignIn = (props) => {
   const [login, setLogin] = useState(initialState);
   const { email, password, errors } = login;
 
-  const { signInSuccess, currentUser } = useSelector(mapState);
+  const { currentUser } = useSelector(mapState);
 
   useEffect(() => {
     if (currentUser) {

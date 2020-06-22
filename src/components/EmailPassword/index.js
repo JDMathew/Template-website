@@ -7,8 +7,7 @@ import FormInput from "../forms/FormInput";
 import AuthWrapper from "../AuthWrapper";
 import {
   resetPasswordStart,
-  resetPassword,
-  resetAllAuthForms,
+  resetUserState,
 } from "./../../redux/User/user.actions";
 
 const initialState = {
@@ -42,7 +41,7 @@ function EmailPassword(props) {
     }
 
     return () => {
-      dispatch(resetAllAuthForms());
+      dispatch(resetUserState());
     };
   }, [resetPasswordSuccess]);
 

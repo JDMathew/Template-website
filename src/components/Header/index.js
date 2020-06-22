@@ -1,10 +1,8 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { auth } from "./../../firebase/utils";
 import { signOutUserStart } from "./../../redux/User/user.actions";
 import Logo from "./../../assets/logo/Logo.png";
-
 import "./styles.scss";
 
 const mapState = (state) => ({
@@ -65,6 +63,7 @@ const Header = (props) => {
 Header.defaultProps = { currentUser: null };
 
 export default Header;
+
 //// The connector passed stae into our component as props. We could then destruct it from props.
 //const { currentUser } = props;
 // //mapStateToProps is is passed to the connect redux function to return state as props into our header component

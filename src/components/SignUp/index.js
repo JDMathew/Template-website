@@ -3,9 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Button from "./../../components/forms/Button";
 import FormInput from "../forms/FormInput";
 import AuthWrapper from "../AuthWrapper";
-import { userError, signUpUserStart } from "../../redux/User/user.actions";
-
-import { auth, handleUserProfile } from "./../../firebase/utils";
+import { signUpUserStart } from "../../redux/User/user.actions";
 
 import "./styles.scss";
 
@@ -22,7 +20,7 @@ const mapState = (state) => ({
   userError: state.user.userError,
 });
 
-const SignUp = (props) => {
+const SignUp = () => {
   const [signUp, setSignUp] = useState(initialState);
   const { displayName, email, password, confirmPassword, errors } = signUp;
   const { currentUser, userError } = useSelector((state) => ({

@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 //Router
 import { Route, Switch, Redirect } from "react-router-dom";
-import { auth, handleUserProfile } from "./firebase/utils"; //authentication from firebase
 
 //REDUX
-import { connect, useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 //Actions
-import { setCurrentUser, checkUserSession } from "./redux/User/user.actions";
+import { checkUserSession } from "./redux/User/user.actions";
 
 //hoc
 import WithAuth from "./hoc/withAuth";
@@ -26,37 +25,12 @@ import Dashboard from "./pages/Dashboard";
 //Styles
 import "./default.scss";
 
-function App(props) {
+function App() {
   const currentUser = useSelector((state) => state.user.currentUser);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(checkUserSession());
-
-    // //event listner moved out to Redux saga
-    //  //event listener that runs code inside the onAuthStateChanged function
-    // const authListener = auth.onAuthStateChanged(async (userAuth) => {
-    //   if (userAuth) {
-    //     const userRef = await handleUserProfile(userAuth); //handleUserProfile returns our userRef document after creating it.
-    //     //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
-    //     userRef.onSnapshot((snapshot) => {
-    //       //Call our Redux action to update state
-    //       dispatch(
-    //         setCurrentUser({
-    //           currentUser: {
-    //             id: snapshot.id,
-    //             ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
-    //           },
-    //         })
-    //       );
-    //     });
-    //   }
-    //   dispatch(setCurrentUser({ currentUser: userAuth })); //userAuth should return null.
-    // });
-    // return () => {
-    //   console.log("clean up  effect");
-    //   authListener();
-    // };
   }, []);
 
   return (
@@ -135,8 +109,38 @@ function App(props) {
 export default App;
 
 // /// REDUX without REDUX HOOKS:
+//import { connect} from "react-redux";
 // const { setCurrentUser, currentUser } = props; //Destructuring actions (setCurrentUser action) and state currentUser from props
 // // .... code....
+// useEffect(() => {
+//   dispatch(checkUserSession());
+
+// //event listner moved out to Redux saga
+//  //event listener that runs code inside the onAuthStateChanged function
+// const authListener = auth.onAuthStateChanged(async (userAuth) => {
+//   if (userAuth) {
+//     const userRef = await handleUserProfile(userAuth); //handleUserProfile returns our userRef document after creating it.
+//     //Subscripting to userRef and waiting for onSnapshot event to get the snapshot update the local state of our application
+//     userRef.onSnapshot((snapshot) => {
+//       //Call our Redux action to update state
+//       dispatch(
+//         setCurrentUser({
+//           currentUser: {
+//             id: snapshot.id,
+//             ...snapshot.data(), // Grabbing all the other date we stored in the document. This was displayName, email, createDate and  ...additionalData we passed it
+//           },
+//         })
+//       );
+//     });
+//   }
+//   dispatch(setCurrentUser({ currentUser: userAuth })); //userAuth should return null.
+// });
+// return () => {
+//   console.log("clean up  effect");
+//   authListener();
+// };
+// }, []);
+// // ....code...
 
 // const mapStateToProps = (state) => ({
 //   currentUser: state.user.currentUser,

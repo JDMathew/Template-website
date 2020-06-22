@@ -4,9 +4,6 @@ const INITIAL_STATE = {
   currentUser: null,
   userError: [],
   resetPasswordSuccess: false,
-  //CAN REMOVE THESE OTHER STATES BELOW
-  signInSuccess: false,
-  resetPasswordError: [],
 };
 
 const userReducer = (state = INITIAL_STATE, { type, payload }) => {
@@ -14,30 +11,13 @@ const userReducer = (state = INITIAL_STATE, { type, payload }) => {
   switch (type) {
     case userTypes.SIGN_IN_SUCCESS:
       return { ...state, currentUser: payload, userError: [] };
-
     case userTypes.RESET_PASSWORD_SUCCESS:
       return { ...state, resetPasswordSuccess: payload };
     case userTypes.USER_ERROR:
       return { ...state, userError: payload };
+    case userTypes.RESET_USER_STATE:
     case userTypes.SIGN_OUT_USER_SUCCESS:
       return { ...state, ...INITIAL_STATE };
-
-    ///OLD CAN REMOVE
-    case userTypes.SET_CURRENT_USER:
-      return { ...state, ...payload };
-    case userTypes.SIGN_IN_SUCCESS:
-      return { ...state, signInSuccess: payload };
-    case userTypes.RESET_PASSWORD_ERROR:
-      return { ...state, resetPasswordError: payload };
-    case userTypes.RESET_AUTH_FORMS:
-      return {
-        ...state,
-        signInSuccess: false,
-        resetPasswordSuccess: false,
-        resetPasswordError: [],
-      };
-    /////////////////
-
     default:
       return state;
   }
