@@ -1,9 +1,4 @@
-import {
-  auth,
-  handleUserProfile,
-  GoogleProvider,
-  getCurrentUser,
-} from "./../../firebase/utils";
+import { auth } from "./../../firebase/utils";
 
 export const handleResetPasswordAPI = (email) => {
   const config = {
