@@ -29,18 +29,20 @@ export const handleUserProfile = async ({ userAuth, additionalData }) => {
   //If the user exists in the database then the user/uid path will exists with a document id. If it doesn't exist we need to create it.
   const { uid } = userAuth;
 
-  const userRef = firestore.doc(`user/${uid}`); // this returns a reference document with a couple of methods to get data or set data.
+  const userRef = firestore.doc(`users/${uid}`); // this returns a reference document with a couple of methods to get data or set data.
   const snapshot = await userRef.get(); //get the userid
 
   //if user does not exist try create it catch any erros
   if (!snapshot.exists) {
     const { displayName, email } = userAuth;
     const timestamp = new Date();
+    const userRoles = ["user"];
 
     try {
       await userRef.set({
         displayName,
         email,
+        userRoles,
         createDate: timestamp,
         ...additionalData, // we passed the UserAuth and aditional data to the function
       });
