@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { signOutUserStart } from "./../../redux/User/user.actions";
-import Logo from "./../../assets/logo/Logo.png";
+import Logo from "./../../assets/logo/logo.jpg";
 import "./styles.scss";
 
 const mapState = (state) => ({
